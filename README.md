@@ -84,6 +84,8 @@ df['TotalPrice'] = df['Quantity'] * df['UnitPrice'] # Create a new column for to
 ```python
 top_products = df.groupby('Description')['TotalPrice'].sum().sort_values(ascending=False).head(10)
 top_products.head(10)               # Display the top 10 products by total sales
+```
+```
 Description
 PAPER CRAFT , LITTLE BIRDIE           168469.60
 REGENCY CAKESTAND 3 TIER              142264.75
