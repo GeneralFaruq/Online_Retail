@@ -99,10 +99,33 @@ Manual                                 53419.93
 RABBIT NIGHT LIGHT                     51251.24
 Name: TotalPrice, dtype: float64
 ```
+```
+top_quantity = df.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
+top_quantity.head(10)               # Display the top 10 products by quantity sold
+```
+```
+Description
+PAPER CRAFT , LITTLE BIRDIE           80995
+MEDIUM CERAMIC TOP STORAGE JAR        77916
+WORLD WAR 2 GLIDERS ASSTD DESIGNS     54319
+JUMBO BAG RED RETROSPOT               46078
+WHITE HANGING HEART T-LIGHT HOLDER    36706
+ASSORTED COLOUR BIRD ORNAMENT         35263
+PACK OF 72 RETROSPOT CAKE CASES       33670
+POPCORN HOLDER                        30919
+RABBIT NIGHT LIGHT                    27153
+MINI PAINT SET VINTAGE                26076
+Name: Quantity, dtype: int64
+```
+
 ### Revenue by Country
 
 - Analyzed geographic distribution of sales
 - Identified top-performing markets
+```
+country_revenue = df.groupby('Country')['TotalPrice'].sum().sort_values(ascending=False)
+country_revenue.head(10)             # Display the top 10 countries by total revenue
+```
 
 ---
 
@@ -111,8 +134,41 @@ Name: TotalPrice, dtype: float64
 ### Monthly Revenue Trend
 
 - Extracted year and month from transaction dates
+```
+df['Year'] = df['InvoiceDate'].dt.year
+df['Month'] = df['InvoiceDate'].dt.month # Extract year and month from InvoiceDate for time-based analysis
+```
+
 - Observed how revenue changes over time
+```
+monthly_revenue = df.groupby(['Year', 'Month'])['TotalPrice'].sum().reset_index()
+monthly_revenue.head() # Display the monthly revenue to analyze trends over time
+```
+```
+Year	Month	TotalPrice
+0	2010	12	570422.730
+1	2011	1	568101.310
+2	2011	2	446084.920
+3	2011	3	594081.760
+4	2011	4	468374.331
+```
+
 - Identified fluctuations and seasonal patterns
+```
+monthly_revenue['YearMonth'] = monthly_revenue['Year'].astype(str) + '-' + monthly_revenue['Month'].astype(str)
+monthly_revenue.head() # Create a YearMonth column for easier plotting of monthly revenue trends
+```
+```
+Year	Month	TotalPrice	YearMonth
+0	2010	12	570422.730	2010-12
+1	2011	1	568101.310	2011-1
+2	2011	2	446084.920	2011-2
+3	2011	3	594081.760	2011-3
+4	2011	4	468374.331	2011-4
+```
+```
+![alt text](image.png)
+```
 
 ---
 
