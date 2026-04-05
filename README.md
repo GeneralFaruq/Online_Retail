@@ -99,6 +99,8 @@ Manual                                 53419.93
 RABBIT NIGHT LIGHT                     51251.24
 Name: TotalPrice, dtype: float64
 ```
+![alt text](image-2.png)
+
 ```
 top_quantity = df.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
 top_quantity.head(10)               # Display the top 10 products by quantity sold
@@ -117,6 +119,7 @@ RABBIT NIGHT LIGHT                    27153
 MINI PAINT SET VINTAGE                26076
 Name: Quantity, dtype: int64
 ```
+![alt text](image-1.png)
 
 ### Revenue by Country
 
@@ -126,6 +129,7 @@ Name: Quantity, dtype: int64
 country_revenue = df.groupby('Country')['TotalPrice'].sum().sort_values(ascending=False)
 country_revenue.head(10)             # Display the top 10 countries by total revenue
 ```
+![alt text](image-3.png)
 
 ---
 
@@ -158,15 +162,7 @@ Year	Month	TotalPrice
 monthly_revenue['YearMonth'] = monthly_revenue['Year'].astype(str) + '-' + monthly_revenue['Month'].astype(str)
 monthly_revenue.head() # Create a YearMonth column for easier plotting of monthly revenue trends
 ```
-```
-Year	Month	TotalPrice	YearMonth
-0	2010	12	570422.730	2010-12
-1	2011	1	568101.310	2011-1
-2	2011	2	446084.920	2011-2
-3	2011	3	594081.760	2011-3
-4	2011	4	468374.331	2011-4
-```
-![alt text](image.png)n
+![alt text](image.png)
 
 ---
 
@@ -182,6 +178,24 @@ Customers were analyzed using three key metrics:
 
 - Monetary (M):
   Total amount spent by the customer
+```
+customer_df = df.groupby('CustomerID').agg({
+    'InvoiceDate': lambda x: (last_date - x.max()).days,
+    'InvoiceNo': 'count',
+    'TotalPrice': 'sum'
+})                                                   # Create a customer-level dataframe for RFM analysis
+customer_df.columns = ['Recency', 'Frequency', 'Monetary']
+customer_df.head()
+```
+```
+Recency	Frequency	Monetary
+CustomerID			
+12346.0	325	1	77183.60
+12347.0	1	182	4310.00
+12348.0	74	31	1797.24
+12349.0	18	73	1757.55
+12350.0	309	17	334.40
+```
 
 ### RFM Segmentation
 
@@ -191,12 +205,41 @@ Customers were grouped into segments such as:
 - Loyal Customers
 - Recent Customers
 - Others
+```
+customer_df['R_rank'] = customer_df['Recency'].rank(ascending=False)
+customer_df['F_rank'] = customer_df['Frequency'].rank(ascending=True)
+customer_df['M_rank'] = customer_df['Monetary'].rank(ascending=True) # Rank customers based on Recency, Frequency, and Monetary values for RFM segmentation
+```
+```
+customer_df['R_score'] = pd.qcut(customer_df['R_rank'], 4, labels=[4,3,2,1])
+customer_df['F_score'] = pd.qcut(customer_df['F_rank'], 4, labels=[1,2,3,4])
+customer_df['M_score'] = pd.qcut(customer_df['M_rank'], 4, labels=[1,2,3,4]) # Create RFM scores by categorizing the ranks into quartiles (1 to 4) for Recency, Frequency, and Monetary values
+```
+```
+customer_df['R_score'] = pd.qcut(customer_df['R_rank'], 4, labels=[4,3,2,1])
+customer_df['F_score'] = pd.qcut(customer_df['F_rank'], 4, labels=[1,2,3,4])
+customer_df['M_score'] = pd.qcut(customer_df['M_rank'], 4, labels=[1,2,3,4]) # Create RFM scores by categorizing the ranks into quartiles (1 to 4) for Recency, Frequency, and Monetary values
+```
 
 This helps identify:
 
 - High-value customers
 - At-risk customers
 - Engagement patterns
+```
+def segment(row):
+    if row['RFM_Score'] == '444':
+        return 'Best Customers'
+    elif row['F_score'] == 4:
+        return 'Loyal Customers'
+    elif row['R_score'] == 4:
+        return 'Recent Customers'
+    else:
+        return 'Others'
+
+customer_df['Segment'] = customer_df.apply(segment, axis=1) # Segment customers based on their RFM scores to identify different customer groups for targeted marketing strategies
+```
+![alt text](image-4.png)
 
 ---
 
@@ -234,11 +277,11 @@ This analysis demonstrates how transactional data can be transformed into action
 
 ## Tools & Technologies
 
-* Python
-* Pandas
-* Matplotlib
-* Plotly
-* Jupyter Notebook (VS Code)
+- Python
+- Pandas
+- Matplotlib
+- Plotly
+- Jupyter Notebook (VS Code)
 
 ---
 
