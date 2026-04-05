@@ -166,9 +166,7 @@ Year	Month	TotalPrice	YearMonth
 3	2011	3	594081.760	2011-3
 4	2011	4	468374.331	2011-4
 ```
-```
-![alt text](image.png)
-```
+![alt text](image.png)n
 
 ---
 
