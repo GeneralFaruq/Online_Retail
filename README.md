@@ -1,25 +1,25 @@
-# 🛒 Online Retail Data Analysis
+# Online Retail Data Analysis
 
-## 📌 Project Overview
+## Project Overview
 
-This project explores transactional data from an online retail store to uncover insights into **customer behavior, product performance, and sales trends**.
+This project explores transactional data from an online retail store to uncover insights into customer behavior, product performance, and sales trends.
 
 Using Python, the analysis covers:
 
-* Data cleaning and preprocessing
-* Exploratory Data Analysis (EDA)
-* Revenue and product insights
-* Time-based sales trends
-* Customer segmentation using RFM (Recency, Frequency, Monetary)
+- Data cleaning and preprocessing
+- Exploratory Data Analysis (EDA)
+- Revenue and product insights
+- Time-based sales trends
+- Customer segmentation using RFM (Recency, Frequency, Monetary)
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
-* Identify top-performing products and countries
-* Analyze revenue trends over time
-* Understand customer purchasing behavior
-* Segment customers based on value and engagement
+- Identify top-performing products and countries
+- Analyze revenue trends over time
+- Understand customer purchasing behavior
+- Segment customers based on value and engagement
 
 ---
 
